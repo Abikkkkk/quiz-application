@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Question</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Add New Question</h1>
+        <nav>
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/quizzes}">Quizzes</a></li>
+                <li><a th:href="@{/questions}">Manage Questions</a></li>
+                <li><a th:href="@{/create-quiz}">Create Quiz</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="form-container">
+            <form th:action="@{/questions/add}" th:object="${question}" method="post">
+                <div class="form-group">
+                    <label for="questionTitle">Question:</label>
+                    <textarea id="questionTitle" th:field="*{questionTitle}" required></textarea>
+                </div>
+
+                <div class="options-container">
+                    <h3>Options</h3>
+
+                    <div class="form-group">
+                        <label for="option1">Option 1:</label>
+                        <input type="text" id="option1" th:field="*{option1}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="option2">Option 2:</label>
+                        <input type="text" id="option2" th:field="*{option2}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="option3">Option 3:</label>
+                        <input type="text" id="option3" th:field="*{option3}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="option4">Option 4:</label>
+                        <input type="text" id="option4" th:field="*{option4}" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="rightAnswer">Correct Answer (1-4):</label>
+                    <select id="rightAnswer" th:field="*{rightAnswer}" required>
+                        <option value="1">Option 1</option>
+                        <option value="2">Option 2</option>
+                        <option value="3">Option 3</option>
+                        <option value="4">Option 4</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="category">Category:</label>
+                    <input type="text" id="category" th:field="*{category}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="difficultyLevel">Difficulty Level:</label>
+                    <select id="difficultyLevel" th:field="*{difficultyLevel}" required>
+                        <option value="Easy">Easy</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
+                    </select>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn primary">Save Question</button>
+                    <a th:href="@{/questions}" class="btn secondary">Cancel</a>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Quiz Application. All rights reserved.</p>
+    </footer>
+</div>
+</body>
+</html>

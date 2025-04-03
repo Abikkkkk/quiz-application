@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Results</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Quiz Results</h1>
+        <nav>
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/quizzes}">Quizzes</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="results-container">
+            <div class="result-card">
+                <h2>Your Score</h2>
+                <div class="score-display">
+                    <div class="score-circle">
+                        <span class="score" th:text="${score}"></span>
+                        <span class="total" th:text="'/' + ${total}"></span>
+                    </div>
+                    <div class="percentage">
+                        <span th:text="${total != 0 ? #numbers.formatDecimal(score * 100.0 / total, 0, 1) : 'N/A'}"></span>%
+                    </div>
+                </div>
+                <div class="result-message">
+                    <p th:if="${score == total}">Perfect score! Congratulations!</p>
+                    <p th:if="${score >= total * 0.8 and score < total}">Great job! You did very well!</p>
+                    <p th:if="${score >= total * 0.6 and score < total * 0.8}">Good effort! You passed the quiz.</p>
+                    <p th:if="${score >= total * 0.4 and score < total * 0.6}">You need a bit more practice.</p>
+                    <p th:if="${score < total * 0.4}">Keep studying and try again later.</p>
+                </div>
+                <div class="action-buttons">
+                    <a th:href="@{/quiz/{id}(id=${quizId})}" class="btn secondary">Try Again</a>
+                    <a th:href="@{/quizzes}" class="btn primary">More Quizzes</a>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Quiz Application. All rights reserved.</p>
+    </footer>
+</div>
+</body>
+</html>

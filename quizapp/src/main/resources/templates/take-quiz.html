@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Take Quiz</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Quiz Time!</h1>
+        <nav>
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/quizzes}">Quizzes</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="quiz-container">
+            <div class="quiz-header">
+                <h2>Answer all questions</h2>
+                <div class="timer" id="timer">Time: 00:00</div>
+            </div>
+            <form th:action="@{/quiz/{id}/submit(id=${quizId})}" method="post" id="quizForm">
+                <div class="question-container" th:each="question, stat : ${questions}">
+                    <div class="question">
+                        <h3>
+                            <span th:text="${stat.count}"></span>.
+                            <span th:text="${question.questionTitle}"></span>
+                        </h3>
+                        <input type="hidden" name="questionIds" th:value="${question.id}">
+                        <div class="options">
+                            <div class="option" th:each="option, idx : ${#numbers.sequence(1, 4)}">
+                                <label>
+                                    <input type="radio"
+                                           th:id="'q' + ${question.id} + 'o' + ${idx.index + 1}"
+                                           th:name="'answers[' + ${question.id} + ']'"
+                                           th:value="${question['option' + (idx.index + 1)]}">
+                                </label>
+                                <label th:for="'q' + ${question.id} + 'o' + ${idx.index + 1}" th:text="${question['option' + (idx.index + 1)]}"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn primary">Submit Answers</button>
+                </div>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Quiz Application. All rights reserved.</p>
+    </footer>
+</div>
+<script th:inline="javascript">
+    let startTime = new Date().getTime();
+    function updateTimer() {
+        const currentTime = new Date().getTime();
+        const elapsedTime = Math.floor((currentTime - startTime) / 1000);
+        const minutes = Math.floor(elapsedTime / 60);
+        const seconds = elapsedTime % 60;
+        document.getElementById('timer').innerText = `Time: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+    setInterval(updateTimer, 1000);
+    // Form validation to ensure all questions are answered with respect to the options selected (th:name="'answers[' + ${question.id} + ']'")
+    document.getElementById('quizForm').addEventListener('submit', function(event) {
+        const questions = document.querySelectorAll('.question');
+        let allAnswered = true;
+        questions.forEach(question => {
+            const options = question.querySelectorAll('input[type="radio"]');
+            const answered = Array.from(options).some(option => option.checked);
+            if (!answered) {
+                allAnswered = false;
+                question.classList.add('error');
+            } else {
+                question.classList.remove('error');
+            }
+        });
+        if (!allAnswered) {
+            event.preventDefault();
+            alert('Please answer all questions before submitting.');
+        }
+    });
+</script>
+</body>
+</html>

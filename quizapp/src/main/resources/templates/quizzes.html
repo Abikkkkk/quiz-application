@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Quizzes</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Available Quizzes</h1>
+        <nav>
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/quizzes}">Quizzes</a></li>
+                <li><a th:href="@{/questions}">Manage Questions</a></li>
+                <li><a th:href="@{/create-quiz}">Create Quiz</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="quiz-list">
+            <div th:if="${quizzes.empty}" class="empty-state">
+                <p>No quizzes available yet. <a th:href="@{/create-quiz}">Create one now!</a></p>
+            </div>
+
+            <div th:unless="${quizzes.empty}" class="quiz-grid">
+                <div class="quiz-card" th:each="quiz : ${quizzes}">
+                    <h3 th:text="${quiz.title}"></h3>
+                    <p>Questions: <span th:text="${quiz.questions.size()}"></span></p>
+                    <a th:href="@{/quiz/{id}(id=${quiz.id})}" class="btn primary">Take Quiz</a>
+                </div>
+            </div>
+        </section>
+
+        <div class="create-new">
+            <a th:href="@{/create-quiz}" class="btn secondary">Create New Quiz</a>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Quiz Application. All rights reserved.</p>
+    </footer>
+</div>
+</body>
+</html>
